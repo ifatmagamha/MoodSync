@@ -44,7 +44,7 @@ class AudioAgent:
                 response = openai.Audio.transcribe(
                     model="whisper-1",
                     file=file,
-                    language=None  # auto-detect language
+                    language=None  
                 )
             return response["text"]
         except Exception as e:
@@ -57,7 +57,7 @@ class AudioAgent:
             response = openai.Completion.create(
                 model="text-davinci-003",
                 prompt=f"Translate the following text to {self.target_language}: {text}",
-                max_tokens=500
+                max_tokens=200
             )
             translated_text = response.choices[0].text.strip()
             return translated_text
@@ -77,7 +77,7 @@ class AudioAgent:
         try:
             print("Generating summary...")
             response = openai.ChatCompletion.create(
-                model="gpt-4",  # Corrected method and model
+                model="gpt-4", 
                 messages=[
                     {"role": "system", "content": "You are an assistant helping a therapist interpret patient speech."},
                     {"role": "user", "content": prompt}

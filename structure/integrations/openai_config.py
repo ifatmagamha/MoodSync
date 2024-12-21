@@ -1,15 +1,24 @@
 import os
-from openai import OpenAI
+import openai
+from dotenv import load_dotenv 
+
+# Load environment variables from .env file
+load_dotenv()
 
 class OpenAIConfig:
     def __init__(self, api_key=None):
         """
         Initialize the OpenAI client with the provided API key or an environment variable.
         """
+        # Use the provided API key or load from environment variables
         self.api_key = api_key or os.environ.get("OPENAI_API_KEY")
+        
+        # Ensure the API key is available
         if not self.api_key:
             raise ValueError("API key for OpenAI must be provided or set as an environment variable.")
-        self.client = OpenAI(api_key=self.api_key)
+        
+        # Set the API key for OpenAI
+        openai.api_key = self.api_key
 
     def create_chat_completion(self, model, messages, **kwargs):
         """
@@ -23,8 +32,13 @@ class OpenAIConfig:
         Returns:
             dict: The response from the OpenAI API.
         """
-        return self.client.chat.completions.create(
-            model=model,
-            messages=messages,
-            **kwargs
-        )
+        try:
+            response = openai.ChatCompletion.create(  
+                model=model,
+                messages=messages,
+                **kwargs
+            )
+            return response
+        except Exception as e:
+            print(f"Error creating chat completion: {e}")
+            return None  # Return None if an error occurs

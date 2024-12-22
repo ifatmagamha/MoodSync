@@ -27,6 +27,7 @@ To run this project, you will need the following libraries and tools:
 - Spotify API Credentials
 - Streamlit for the web interface
 - Other dependencies as listed in the `requirements.txt`
+  
 ![image](https://github.com/user-attachments/assets/656ef5ce-63a4-4a28-a2fb-9db2161d7364)
 
 ##Hack 4 Good Highlights

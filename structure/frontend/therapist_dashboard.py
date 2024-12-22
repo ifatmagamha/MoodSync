@@ -5,7 +5,7 @@ import sys
 from dotenv import load_dotenv
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from backend.audio_agent import AudioAgent
+from backend.agents.audio_agent import AudioAgent
 
 # Load environment variables
 load_dotenv()
@@ -49,10 +49,22 @@ audio_agent = AudioAgent(
 # Step 1: Record Audio
 st.header("🎙️ Step 1: Record Audio")
 audio_file = None
-if st.button("Start Recording"):
-    with st.spinner("Recording for 60 seconds..."):
-        audio_file = audio_agent.capture_audio(duration=60)
+
+# Start recording
+start_recording = st.button("Start Recording")
+stop_recording = st.button("Stop Recording")
+
+# Handle recording and stopping
+if start_recording:
+    with st.spinner("Recording in progress..."):
+        audio_file = audio_agent.capture_audio(duration=60)  # Start recording
     st.success("Recording complete! Audio saved as `recorded_audio.wav`.")
+
+elif stop_recording and audio_file is None:
+    with st.spinner("Stopping recording..."):
+        # Stop the recording immediately and process the audio
+        audio_file = audio_agent.capture_audio(duration=0)  # Stop recording immediately
+    st.success("Recording stopped and saved.")
 
 # Step 2: Transcription and Translation
 if audio_file:
@@ -72,6 +84,8 @@ if audio_file:
 # Step 3: Generate Session Summary
 if audio_file and transcription_result:
     st.header("📋 Step 3: Generate Session Summary")
+    
+    # Call AudioAgent to generate session summary after analyzing the transcription
     summary = audio_agent.summarize_transcript(transcription_result)
 
     if summary:
@@ -86,10 +100,36 @@ if audio_file and transcription_result:
         st.markdown("**Therapeutic Goals**")
         st.write(summary.get("therapeutic_goals", "N/A"))
 
+        # Generate a unique file name for the session summary based on patient name and date
+        session_date = datetime.today().strftime('%Y-%m-%d')
+        file_name = f"{patient_name.replace(' ', '_')}_session_summary_{session_date}.json"
+
+        # Ensure the "fiches" directory exists
+        fiches_folder = './fiches'
+        if not os.path.exists(fiches_folder):
+            os.makedirs(fiches_folder)
+
+        # Save the summary to the "fiches" directory
         if st.button("Save Summary"):
-            file_name = f"{patient_name.replace(' ', '_')}_session_summary.json"
-            audio_agent.save_summary_to_json(summary, file_name="session_summary.json")
-            st.success(f"Summary saved to `{os.path.join(output_folder, file_name)}`.")
+            audio_agent.save_summary_to_json(summary, output_folder=fiches_folder, file_name=file_name)
+            st.success(f"Summary saved to `{os.path.join(fiches_folder, file_name)}`.")
+
+        # Display full session information with all analyzed fields from the second LLM
+        st.header("🎯 Full Session Representation")
+        session_data = {
+            "Patient Name": patient_name,
+            "Age": patient_age,
+            "History": patient_history,
+            "Date": session_date,
+            "Overview": summary.get("overview", "N/A"),
+            "Key Insights": summary.get("key_insights", "N/A"),
+            "Emotions or States": summary.get("emotions_or_states", "N/A"),
+            "Therapeutic Goals": summary.get("therapeutic_goals", "N/A")
+        }
+        
+        # Show the full session information
+        st.json(session_data)
+
     else:
         st.error("Summary generation failed.")
 

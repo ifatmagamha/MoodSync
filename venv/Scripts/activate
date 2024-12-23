@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Fatma\projet-python\MoodSync\venv"
+VIRTUAL_ENV="C:\Users\Ramy\OneDrive\Documents\MoodSync\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

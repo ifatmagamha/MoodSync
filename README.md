@@ -1,4 +1,4 @@
-MoodSync
+#MoodSync
 Therapy Session Assistant
 The Therapy Session Assistant is an AI-powered tool designed to help therapists engage more effectively with their patients and streamline the therapy process. It analyzes patient speech, generates session summaries, and adjusts the environment with music to create a more comfortable and focused therapeutic setting. This system integrates three key agents: Audio Agent, Mood Detection, and Music Curation.
 

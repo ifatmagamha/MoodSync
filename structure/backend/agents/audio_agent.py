@@ -235,14 +235,13 @@ def save_summary_to_json(summary, file_name=None):
         logging.error(f"Error saving summary to JSON: {e}")
 
 if __name__ == "__main__":
-    # Sample patient data (this would normally come from your application context)
+    # Sample patient data (this would normally come from the application context)
     patient_data = {
         "name": "John Doe",
         "age": 30,
         "history": "No significant medical history."
     }
 
-    # Your OpenAI API key (make sure to load it from your environment variable)
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
     # Initialize the AudioAgent

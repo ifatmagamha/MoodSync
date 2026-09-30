@@ -1,0 +1,7 @@
+openai>=1.92
+pydantic>=2
+python-dotenv
+streamlit>=1.40
+pandas
+spotipy
+phue

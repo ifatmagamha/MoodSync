@@ -3,3 +3,8 @@
 venv
 .env 
 .Environments
+__pycache__/
+saved_outputs/*
+*.wav
+.cache
+.cache-*

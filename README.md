@@ -27,6 +27,16 @@ To run this project, you will need the following libraries and tools:
 - Spotify API Credentials
 - Streamlit for the web interface
 - Other dependencies as listed in the `requirements.txt`
+
+## Run
+
+```bash
+pip install -r requirements.txt
+streamlit run structure/frontend/therapist_dashboard.py
+```
+
+`.env` keys: `OPENAI_API_KEY` (required), optional `OPENAI_MODEL`, `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `REDIRECT_URI`, `OUTPUT_PATH`.
+Session records are written to `structure/saved_outputs/records/<patient>/` (git-ignored). Offline checks: `python structure/test_moodsync.py`.
   
 ![image](https://github.com/user-attachments/assets/656ef5ce-63a4-4a28-a2fb-9db2161d7364)
 
